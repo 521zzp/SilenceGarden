@@ -1,12 +1,17 @@
 <template>
   <div id="app">
     <router-view/>
+    <Button type="primary">xxasda</Button>
   </div>
 </template>
 
 <script>
+import { Button, Table } from 'iview';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+  	Button
+  }
 }
 </script>
 
@@ -17,9 +22,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-html,body{
-	padding: 0;
-	margin: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="hello" @click="bgmplay">
+  <div class="hello"  @touchstart="bgmplay" @click="bgmplay">
+  		<audio src="/assets/audio/汐.mp3"  ref="bgm" autoplay="autoplay" loop="loop"></audio>
   		曾志鹏的个人网站，开发中……
-  		<audio src="/assets/audio/汐.mp3" ref="bgm"  loop="loop"></audio>
   		<h3>湘君</h3>
   		<span>君不行兮夷犹，蹇谁留兮中洲？</span>
   		<span>美要眇兮宜修，沛吾乘兮桂舟。</span>
@@ -30,12 +30,20 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
     }
+  },
+  mounted() {
+  	const vm = this;
+  	document.addEventListener("WeixinJSBridgeReady", function () {
+		    vm.bgmplay();
+		}, false);
   },
   methods: {
   	bgmplay () {
-  		this.$refs.bgm.play()
+  		if (this.$refs.bgm.paused) {
+  			this.$refs.bgm.play()
+  		}
   	}
   }
 }
@@ -51,7 +59,7 @@ span{
 }
 .hello{
 	padding-top: 60px;
-	height: 100vh;
+	min-height: 100vh;
 	width: 100vw;
 	background-image: url(/assets/image/home-bg.jpg);
 	overflow: hidden;
