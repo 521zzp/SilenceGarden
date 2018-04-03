@@ -4,7 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import '@/config/base.less'
-import 'iview/dist/styles/iview.css';
+import '@/config/animate.css'
+import 'iview/dist/styles/iview.css'
+
+
+import { Row, Col } from 'iview';
+Vue.component('Row', Row);
+Vue.component('Col', Col);
 
 
 Vue.config.productionTip = false

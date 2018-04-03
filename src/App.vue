@@ -1,16 +1,13 @@
 <template>
   <div id="app">
     <router-view/>
-    <Button type="primary">xxasda</Button>
   </div>
 </template>
 
 <script>
-import { Button, Table } from 'iview';
 export default {
   name: 'App',
   components: {
-  	Button
   }
 }
 </script>

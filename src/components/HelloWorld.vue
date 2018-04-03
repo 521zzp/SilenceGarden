@@ -1,7 +1,7 @@
 <template>
   <div class="hello"  @touchstart="bgmplay" @click="bgmplay">
   		<audio src="/assets/audio/汐.mp3"  ref="bgm" autoplay="autoplay" loop="loop"></audio>
-  		曾志鹏的个人网站，开发中……
+  		<!--曾志鹏的个人网站，开发中……
   		<h3>湘君</h3>
   		<span>君不行兮夷犹，蹇谁留兮中洲？</span>
   		<span>美要眇兮宜修，沛吾乘兮桂舟。</span>
@@ -21,7 +21,7 @@
   		<span>鸟次兮屋上，水周兮堂下。</span>
   		<span>捐余玦兮江中，遗余佩兮澧浦。</span>
   		<span>采芳洲兮杜若，将以遗兮下女。</span>
-  		<span>时不可兮再得，聊逍遥兮容与。</span>
+  		<span>时不可兮再得，聊逍遥兮容与。</span>-->
   </div>
 </template>
 
@@ -50,22 +50,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-span{
-	display: block;
-}
-.hello{
-	padding-top: 60px;
-	min-height: 100vh;
-	width: 100vw;
-	background-image: url(/assets/image/home-bg.jpg);
-	overflow: hidden;
-	box-sizing: border-box;
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-}
+<style scoped lang="less">
+
 </style>
