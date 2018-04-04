@@ -1,35 +1,35 @@
 <template>
 	<div class="container" @touchstart="bgmplay" @click="bgmplay">
 		<audio src="/assets/audio/汐.mp3"  ref="bgm" autoplay="autoplay" loop="loop"></audio>
-		<Row type="flex" justify="space-around">
+		<Row type="flex" justify="space-around" class="animated fadeInDown">
 			<Col class="col" :xs="20" :sm="12">
-				<div class="item skill">
+				<router-link to="/" class="item skill">
 					<span>纵使困顿难行，亦当砥砺奋进</span>
-				</div>
+				</router-link>
 			</Col>
 		</Row>
 		
-		<Row type="flex" justify="space-around">
+		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.4s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<div class="item poetry">
+				<router-link to="/poetry" class="item poetry">
 					<span>今日默书，方恨千卷诗书未能全记</span>
-				</div>
+				</router-link>
 			</Col>
 		</Row>
 		
-		<Row type="flex" justify="space-around">
+		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.8s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<div class="item violin">
+				<router-link to="/" class="item violin">
 					<span>再抚琴，早已咫尺天涯…</span>
-				</div>
+				</router-link>
 			</Col>
 		</Row>
 		
-		<Row type="flex" justify="space-around">
+		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '1.2s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<div class="item kawayi">
-					<span>生人勿进</span>
-				</div>
+				<router-link to="/" class="item kawayi">
+					<span>生人勿进( • ̀ω•́ )✧</span>
+				</router-link>
 			</Col>
 		</Row>
 		
@@ -61,6 +61,7 @@ export default {
 
 <style lang="less" scoped="scoped">
 @import '../../config/base.less';
+
 .skill{
 	background-image: url(/assets/image/common/skill-bg.png);
 }
@@ -81,16 +82,17 @@ export default {
 	background-repeat: no-repeat;
 	padding-top: 10vh;
 	background-attachment: fixed;
-	font-family: "八大山人字体";
+	font-family: @poem;
 }
 .col{
 	margin: 20px auto;
 }
 .item{
+	display: block;
 	background-color: rgba(0, 0, 0, 0.3);
-	height: 80px;
+	min-height: 80px;
 	line-height: 80px;
-	font-size: 24px;
+	font-size: 36px;
 	border-radius: @bbr;
 	text-align: left;
 	padding-left: 2em;
@@ -111,6 +113,7 @@ export default {
 	transition: all .5s;
 	letter-spacing: .2em;
 	font-style: inherit;
+	
 }
 .item:hover span{
 	background: linear-gradient(to right, red, blue);
