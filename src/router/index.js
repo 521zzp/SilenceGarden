@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/page/Home' 
 import Poetry from '@/components/page/Poetry' 
+import Poem from '@/components/page/Poem' 
 
 Vue.use(Router)
 
 export default new Router({
-	mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -20,9 +20,9 @@ export default new Router({
       component: Poetry
     },
     {
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/poem/:title',
+      name: 'Poem',
+      component: Poem
     },
   ]
 })
