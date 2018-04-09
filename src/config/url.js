@@ -4,5 +4,5 @@ export const IMG = '/assets/image'
 
 
 
-export const GET_POETRY_CATALOG = BASEURL + '/poetry_catlog' //诗词目录
+export const GET_POETRY_CATALOG = BASEURL + '/poetry_catalog' //诗词目录
 export const GET_POEM = BASEURL + '/poem/{title}' //获取文章

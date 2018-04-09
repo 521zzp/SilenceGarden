@@ -49,12 +49,14 @@ export default {
 	color: #57a3f3;
 }
 .container{
-	min-height: 100vh;
+	height: 100vh;
+	overflow: auto;
 	background-image: url(/assets/image/common/poetry-list-bg.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	font-family: @poem;
 	font-size: 24px;
+	background-attachment: fixed;
 }
 .title{
 	font-size: 36px

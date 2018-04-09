@@ -22,6 +22,7 @@ const actions = {
 		}
 	},
 	getPoemByTitle ({ commit }, obj){
+		commit(types.GET_POEM, {})
 		fetch(restful(GET_POEM, obj), getModel()).then(analy)
 				.then((datas)=>{
 					datas ? commit(types.GET_POEM, datas) : ''
