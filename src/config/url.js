@@ -1,6 +1,6 @@
 export const BASEURL = '/api'  //服务器地址
 
-export const IMG = '/assets/image'
+export const IMG = '/assets/image' //图片地址
 
 
 

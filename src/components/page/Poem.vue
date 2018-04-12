@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container" :style="bgimage">
 		<div class="wrap">
 			<div class="title">{{ poem.title }}</div>
 			<!--<div class="info">相关信息</div>-->
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+	import { IMG } from '@/config/url'
+	import { isPc } from '@/utils/tool'
 	export default {
 		data () {
 			return {
@@ -33,6 +35,22 @@
 			},
 			content () {
 				return this.poem.content
+			},
+			bgimage () {
+				console.log(this.poem.img)
+				if (this.poem.img && this.poem.img.length > 0) {
+					const path = IMG + '/poem-bg/'
+					console.log(isPc())
+					console.log(this.poem.img[0])
+					console.log(path + this.poem.img[0])
+					return {
+						backgroundImage: isPc() ? `url(${path + this.poem.img[0]})` : `url(${path + this.poem.img[1]})`
+					}
+				} else{
+					return {
+						
+					}
+				}
 			}
 		},
 		created () {
@@ -49,7 +67,7 @@
 	color: #000000;
 	height: 100vh;
 	overflow: auto;
-	background-image: url(/assets/image/poem-bg/tengwanggexu.jpg);
+	background-image: url(/assets/image/poem-bg/poem-default.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-attachment: fixed;
@@ -66,7 +84,6 @@
 	margin-top: 50px;
 	padding: 0 1em;
 	border-radius: @bbr;
-	background-color: rgba(255, 255, 255, 0.3);
 }
 .sentence{
 	display: block;
@@ -88,12 +105,16 @@
 		width: 94%;
 		margin-top: 8vh;
 		padding: 0 0;
+		background-color: rgba(255, 255, 255, 0.3);
 	}
 	.title{
 		font-size: 42px;
 	}
 	.content{
 		font-size: 26px;
+	}
+	.container{
+		background-image: url(/assets/image/poem-bg/poem-default-m.jpg);
 	}
 }
 </style>

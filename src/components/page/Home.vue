@@ -3,7 +3,7 @@
 		<audio src="/assets/audio/汐.mp3"  ref="bgm" autoplay="autoplay" loop="loop"></audio>
 		<Row type="flex" justify="space-around" class="animated fadeInDown">
 			<Col class="col" :xs="20" :sm="12">
-				<router-link to="/" class="item skill">
+				<router-link to="/poetry" class="item skill">
 					<span>纵使困顿难行，亦当砥砺奋进</span>
 				</router-link>
 			</Col>
@@ -19,7 +19,7 @@
 		
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.8s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<router-link to="/poem/关雎" class="item violin">
+				<router-link to="/poetry" class="item violin">
 					<span>再抚琴，早已咫尺天涯…</span>
 				</router-link>
 			</Col>
@@ -27,7 +27,7 @@
 		
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '1.2s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<router-link to="/" class="item kawayi">
+				<router-link to="/poetry" class="item kawayi">
 					<span>生人勿进( • ̀ω•́ )✧</span>
 				</router-link>
 			</Col>
