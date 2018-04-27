@@ -10,9 +10,10 @@ import '@/config/animate.css'
 import 'iview/dist/styles/iview.css'	
 
 
-import { Row, Col } from 'iview';
+import { Row, Col, Icon } from 'iview';
 Vue.component('Row', Row);
 Vue.component('Col', Col);
+Vue.component('Icon', Icon);
 
 Vue.config.productionTip = false
 

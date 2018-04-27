@@ -19,7 +19,7 @@
 		
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.8s' }">
 			<Col class="col" :xs="20" :sm="12">
-				<router-link to="/poetry" class="item violin">
+				<router-link to="/violin" class="item violin">
 					<span>再抚琴，早已咫尺天涯…</span>
 				</router-link>
 			</Col>

@@ -16,5 +16,10 @@ export default {
 </script>
 
 <style>
+.clearfix:after{
+	content: '';
+	display: block;
+	clear: both;
+}
 
 </style>
