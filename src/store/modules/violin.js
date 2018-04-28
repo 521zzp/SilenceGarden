@@ -6,9 +6,13 @@ import { getModel, restful, analy } from '@/utils/net'
 const state = {
 	catalog: [],
 	melody: {
+		name: '',
 		src: '',
 		img: '',
-	}
+		bg_img: ''
+	},
+	last: '1',	//上一曲
+	next: '2',	//下一曲
 }
 
 const actions = {

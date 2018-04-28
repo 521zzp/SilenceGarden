@@ -1,57 +1,69 @@
 <template>
-	<div class="violin-wrap">
-		<audio ref="music" :src="aud" @play="startPlay" :autoplay="true"></audio>
-		<div class="violin-content">
-			<div class="disc">
-				<div class="disc-bg"></div>	
-				<img src="/assets/image/violin/四月是你的谎言.png" class="melody-disk" :class="{ 'melody-pause': paused }"/>	
-				<div :style="lightScale" class="disk-light" 
-					:class="{ 'disk-light-show': !paused }">
+	<div class="violin-wrap" :style="{ backgroundImage: `url(${diskBGImg})` }"
+		@keyup.space.prevent="keyBoardChontroller" tabindex="-1" ref="page">
+		<div class="container">
+			<div class="title">{{ title }}</div>
+			
+			<!-- 音频控件 -->
+			<audio ref="music" :src="aud" @play="startPlay" @pause="pauseListener" @ended="playEnded" :autoplay="true"></audio>
+			
+			<div class="violin-content">
+				<div class="disc">
+					<div class="disc-bg"></div>	
+					<img :src="discImg" class="melody-disk" :class="{ 'melody-pause': paused }"/>	
+					<div :style="lightScale" class="disk-light" 
+						:class="{ 'disk-light-show': !paused }">
+					</div>
+					<div class="disk-controller" :class="{ 'disk-controller-transition': !pointer.flag }"
+						:style="{ transform: 'rotate(' + controllerRotate +  'deg)'  }">
+					</div>
 					
 				</div>
-				<div class="disk-controller" :style="{ transform: 'rotate(' + controllerRotate +  'deg)'  }">
+				<div class="time-content clearfix">
+					<div class="slider-wrap " @mousedown="stopClock" @mouseup="awakenClock">
+						<Slider :value="current" :max="max" :step="0.01" :tip-format="currentFormat" @on-change="currentSet"  class="violin-slider"></Slider>
+					</div>
+					<span class="time-show">{{playTimeFormat(current)}} / {{playTimeFormat(during)}}</span>
 				</div>
-				
 			</div>
-			<div class="time-content clearfix">
-				<div class="slider-wrap " @mousedown="stopClock" @mouseup="awakenClock">
-					<Slider :value="current" :max="max" :step="0.01" :tip-format="currentFormat" @on-change="currentSet"  class="violin-slider"></Slider>
+			<!-- 播放控制组件 -->
+			<div class="controller">
+				<div class="single-circle melody-exchange" @click="playModelChange('single')">
+					 <div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'single' }"></div>
+					<Tooltip content="单曲循环" placement="top" :delay="800">
+			            <Icon type="ios-loop-strong"></Icon>
+			        </Tooltip>
 				</div>
-				<span class="time-show">{{playTimeFormat(current)}} / {{playTimeFormat(during)}}</span>
+				<Tooltip content="上一曲" class="last melody-exchange" placement="top" :delay="800">
+					<div @click="changeMusic(last)">
+						<Icon type="ios-skipbackward" ></Icon>
+					</div>
+				</Tooltip>
+				<Tooltip :content="paused ? '播放' : '暂停' " class="play-puase" placement="top" :delay="800">
+					<div @click="playPause" style="width: 60px; height: 60px;">
+						<Icon v-show="paused" type="ios-play" style="margin-left: 6px;"></Icon>
+						<Icon v-show="!paused" type="ios-pause"></Icon>
+					</div>
+				</Tooltip>
+				<Tooltip content="下一曲" class="next melody-exchange" placement="top" :delay="800">
+					<div @click="changeMusic(next)">
+						<Icon type="ios-skipforward" @click="changeMusic(next)"></Icon>
+					</div>
+				</Tooltip>
+				<div class="random-play melody-exchange" @click="playModelChange('random')">
+					<div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'random' }"></div>
+					<Tooltip content="随机播放" placement="top" :delay="800">
+						<Icon type="ios-shuffle-strong"></Icon>
+					</Tooltip>
+				</div>
 			</div>
-		</div>
-		<div class="controller">
-			<div class="single-circle melody-exchange" 
-				 :class="{ 'single-circle-on': model === 'single' }">
-				<Icon type="ios-loop-strong"></Icon>
-			</div>
-			<div class="last melody-exchange">
-				<Icon type="ios-skipbackward"></Icon>
-			</div>
-			<div class="play-puase" @click="playPause">
-				<Icon v-show="paused" type="ios-play" style="margin-left: 8px;"></Icon>
-				<Icon v-show="!paused" type="ios-pause"></Icon>
-			</div>
-			<div class="next melody-exchange">
-				<Icon type="ios-skipforward"></Icon>
-			</div>
-			<div class="random-play melody-exchange">
-				<Icon type="ios-shuffle-strong"></Icon>
-			</div>
-		</div>
-<!--		<span class="play" @click="a">
-			<span v-show="!paused">暂停</span>
-			<span v-show="paused">播放</span>
-		</span>
--->		<div>
-			<div @click="exchange(1)">爱的忧伤-低音质.mp3</div>
-			<div @click="exchange(2)">汐.mp3</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { Slider } from 'iview';
+	import { Slider, Tooltip } from 'iview';
+	import { IMG } from '@/config/url'
 	export default {
 		data () {
 			return {
@@ -61,7 +73,11 @@
 				clock: null,			//定时器,获取更新播放进度
 				min: 0, 				//最小值
 				max: 0,					//最大值
-				model: 'single', 		//播放模式 single：单曲循环 random：随机播放
+				model: '', 		//播放模式 single：单曲循环 random：随机播放
+				pointer: {
+					init_value: -30,
+					flag: false, 		//是否跟随播放时间实时更改
+				}
 			}
 		},
 		computed: {
@@ -72,7 +88,25 @@
 				return this.$store.state.violin.melody.src
 			},
 			discImg () {
-				
+				let img = this.$store.state.violin.melody.img
+				img = img ? img : '四月是你的谎言.png'
+				return `${IMG}/violin/${img}`
+			},
+			diskBGImg () {
+				let bg_img = this.$store.state.violin.melody.bg_img
+				bg_img = bg_img ? bg_img : '四月是你的谎言.png'
+				return `${IMG}/violin/${bg_img}`
+			},
+			//歌曲名
+			title () {
+				return this.$store.state.violin.melody.name
+			},
+			//上一曲和下一曲
+			last () {
+				return this.$store.state.violin.last
+			},
+			next () {
+				return this.$store.state.violin.next
 			},
 			// 光线缩放与选择控制
 			lightScale () {
@@ -92,7 +126,13 @@
 				if (this.paused) {
 					return -30
 				} else {
-					return (this.current / this.during) * 11.2 - 4.6
+					if (this.pointer.flag) {
+						console.log('时刻变化的指针')
+						return (this.current / this.during) * 11.2 - 4.6
+					} else {
+						console.log('指针初始化')
+						return  (this.pointer.init_value / this.during) * 11.2 - 4.6
+					}
 				}
 			}
 		},
@@ -105,6 +145,9 @@
 			this.$store.dispatch('getViolinInfo', { id: this.$route.params.id })
 		},
 		mounted () {
+			//页面聚焦
+			this.$refs.page.focus()
+    			
 			console.log('mounted........................')
 			console.log(this.$refs.music)
 			const music = this.$refs.music
@@ -115,16 +158,12 @@
 				this.init()
 				this.pausedChange()
 			})
-			music.addEventListener('ended', (value) => {
-				if (this.clock) {
-					clearInterval(this.clock)
-					this.paused = true
-				} 
-			})
-			//play()和autoplay开始播放时触发  
-			music.addEventListener('play', (value) => {
-				
-			})
+		},
+		// 歌曲参数切换
+		beforeRouteUpdate (to, from ,next) {
+			const id = to.params.id ? to.params.id : 1
+			this.$store.dispatch('getViolinInfo', { id })
+			next()
 		},
 		beforeDestroy () {
 			console.log('曲子播放组件即将销毁')
@@ -136,16 +175,48 @@
 			}
 		},
 		methods: {
+			// 播放结束
+			playEnded () {
+				if (this.model === 'single') {
+					this.$refs.music.play()
+					//this.$refs.music.load(this.aud)
+				} else if (this.model === 'random') {
+					this.$router.push('/violin/' + 3)
+				} else {
+					//停止
+					if (this.clock) {
+						clearInterval(this.clock)
+						this.paused = true
+					} 
+				}
+			},
 			//play()和autoplay开始播放时触发  
 			startPlay () {
 				console.log('playing musci_______________')
 				console.log('play()和autoplay开始播放时触发  ')
+				console.log('当前播放位置：')
+				console.log(this.$refs.music.currentTime)
+				this.pointer.init_value = this.$refs.music.currentTime
 				this.pausedChange()
 				this.startClock()
+				//控制指针到位后跟随播放时间变化
+				const vm = this
+				setTimeout(function () {
+					vm.pointer.flag = true
+				}, 800)
+			},
+			//pause()触发 
+			pauseListener (){
+				this.pointer.flag = false
 			},
 			exchange (id) {
 				this.$router.push('/violin/' + id)
 				this.$store.dispatch('getViolinInfo', { id })
+			},
+			//键盘按键控制
+			keyBoardChontroller () {
+				console.log('key down')
+				this.playPause()
 			},
 			playPause () {
 				console.log(this.$refs.music)
@@ -222,9 +293,19 @@
 					return '00 : 00'
 				}
 			},
+			// 播放模式改变
+			playModelChange (model) {
+				this.model = this.model === model ? '' : model
+			},
+			// 换歌
+			changeMusic (music) {
+				console.log('音乐切换：' + music)
+				this.$router.push(`/violin/${music}`)
+			},
 		},
 		components: {
-			Slider
+			Slider,
+			Tooltip
 		}
 		
 	}
@@ -242,6 +323,14 @@
 <style scoped="scoped" lang="less">
 @import '../../config/base.less';
 
+.title{
+	margin-top: 20px;
+	font-size: 60px;
+	height: 90px;
+	font-family: @poem;
+	color: #fff; 
+	text-shadow: 0 0 1px #fff;
+}
 .controller{
 	width: 310px;
 	height: 70px;
@@ -286,8 +375,21 @@
 	left: 10px;
 	border-radius: 50%;
 }
+.play-model-bg{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #98FB98;
+	top: 0;
+	left: 0;
+	border-radius: 50%;
+	transform: scale(0);
+	transition: transform .3s;
+}
+.play-model-on-bg{
+	transform: scale(1);
+}
 .single-circle-on{
-	background: radial-gradient(circle, white 30%, gray 70%);
 }
 .random-play{
 	right: 10px;
@@ -309,19 +411,20 @@
 	bottom: 0;
 	transition: all .3s;
 }
-.violin-wrap{
+.violin-wrap {
 	min-height: 100vh;
 	overflow: auto;
 	background-image: url('@{image}/violin/四月是你的谎言-背景.jpg');
 	background-position: center;
 	background-attachment: fixed;
-	
+	background-repeat: no-repeat;
 }
 .violin-content{
 	max-width: 1200px;
-	margin-top: 160px;
+	margin-top: 80px;
 	margin-left: auto;
 	margin-right: auto;
+	user-select:none;
 }
 .disc{
 	position: relative;
@@ -349,7 +452,7 @@
 }
 .disk-light-show{
 	opacity: 1;
-	transition-delay: 1s;
+	transition-delay: .8s;
 }
 .disk-controller{
 	position: absolute;
@@ -361,10 +464,7 @@
 	transform: rotate(-30deg);
 	/*transform-origin: 85% 15%;*/
 	transform-origin: 83.78% 11.2%;
-	transition: all .3s;
-}
-.disk-controller.disk-controller-on{
-	
+	transition: all .5s;
 }
 .melody-disk{
 	position: absolute;
@@ -379,6 +479,12 @@
 }
 .slider-wrap{
 	margin-right: 100px;
+}
+.container{
+	width: 100%;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
 }
 .time-show{
 	color: #000000;
