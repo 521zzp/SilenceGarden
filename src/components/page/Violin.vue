@@ -35,7 +35,7 @@
 			        </Tooltip>
 				</div>
 				<Tooltip content="上一曲" class="last melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(last)">
+					<div @click="changeMusic(last, 'last')">
 						<Icon type="ios-skipbackward" ></Icon>
 					</div>
 				</Tooltip>
@@ -46,8 +46,8 @@
 					</div>
 				</Tooltip>
 				<Tooltip content="下一曲" class="next melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(next)">
-						<Icon type="ios-skipforward" @click="changeMusic(next)"></Icon>
+					<div @click="changeMusic(next, 'next')">
+						<Icon type="ios-skipforward"></Icon>
 					</div>
 				</Tooltip>
 				<div class="random-play melody-exchange" @click="playModelChange('random')">
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+	import { message } from '@/utils/talk'
 	import { Slider, Tooltip } from 'iview';
 	import { IMG } from '@/config/url'
 	export default {
@@ -85,16 +86,17 @@
 				return this.$store.state.violin.melody
 			},
 			aud () {
-				return this.$store.state.violin.melody.src
+				const src = this.$store.state.violin.melody.src
+				return `/assets/audio/${src}`
 			},
 			discImg () {
-				let img = this.$store.state.violin.melody.img
-				img = img ? img : '四月是你的谎言.png'
-				return `${IMG}/violin/${img}`
+				let disk_img = this.$store.state.violin.melody.disk_img
+				disk_img = disk_img ? disk_img : '四月是你的谎言.png'
+				return `${IMG}/violin/${disk_img}`
 			},
 			diskBGImg () {
 				let bg_img = this.$store.state.violin.melody.bg_img
-				bg_img = bg_img ? bg_img : '四月是你的谎言.png'
+				bg_img = bg_img ? bg_img : '四月是你的谎言-bg.jpg'
 				return `${IMG}/violin/${bg_img}`
 			},
 			//歌曲名
@@ -181,7 +183,13 @@
 					this.$refs.music.play()
 					//this.$refs.music.load(this.aud)
 				} else if (this.model === 'random') {
-					this.$router.push('/violin/' + 3)
+					if (this.clock) {
+						clearInterval(this.clock)
+						this.paused = true
+					} 
+					console.log('随机播放！')
+					this.$store.dispatch('getRamdonViolinInfo', { id: this.$route.params.id })
+					//this.$router.push('/violin/' + 3)
 				} else {
 					//停止
 					if (this.clock) {
@@ -298,9 +306,17 @@
 				this.model = this.model === model ? '' : model
 			},
 			// 换歌
-			changeMusic (music) {
+			changeMusic (music, type) {
 				console.log('音乐切换：' + music)
-				this.$router.push(`/violin/${music}`)
+				console.log('音乐切换类型：' + type)
+				if (!music && type === 'last') {
+					message('前面什么也没有┐(´∀｀)┌！', 4);
+				} else if (!music && type === 'next') {
+					message('已经是最后一首啦ヽ(`Д´)ﾉ！', 4);
+				} else {
+					message('切歌[]~(￣▽￣)~*！', 2);
+					this.$router.push(`/violin/${music}`)
+				}
 			},
 		},
 		components: {
