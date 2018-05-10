@@ -1,13 +1,27 @@
 <template>
-	<div>
-		<router-link v-for="item,index in catalog"  :to="'/violin/' + item._id" class="item poetry" :key="index">
-			<span>{{ item.name }}</span>
-		</router-link>
-				
+	<div class="violin-catalog-cintainer">
+		<div class="content">
+			<Row :gutter="6" type="flex" justify="space-around" class="link-group">
+				<Col :lg="6" :md="10" :sm="11" :xs="20" 
+					 class="animated fadeInUp" 
+					 :style="{ animationDelay: index * 0.3 + 's' }"
+					 v-for="item,index in catalog" :key="index + 'box'">
+					<LinkBox :violin="item"/>
+				</Col>
+				<Col :lg="6" :md="10" :sm="11" :xs="20" >
+				</Col>
+				<Col :lg="6" :md="10" :sm="11" :xs="20" >
+				</Col>
+				<Col :lg="6" :md="10" :sm="11" :xs="20" >
+				</Col>
+			</Row>
+		</div>
 	</div>
 </template>
 
 <script>
+	import LinkBox from '@/components/pure/violin_catalog/LinkBox'
+	
 	export default {
 		created () {
 			this.$store.dispatch('getVillinCatalog')
@@ -16,9 +30,28 @@
 			catalog () {
 				return this.$store.state.violin.catalog
 			}
+		},
+		components: {
+			LinkBox
 		}
 	}
 </script>
 
-<style>
+<style scoped="scoped" lang="less">/*violin-catalog-bg.jpg*/
+@import '../../config/base.less';
+.content{
+	width: 100%;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+.violin-catalog-cintainer{
+	min-height: 100vh;
+	background-image: url("@{image}/violin/violin-catalog-bg.jpg");
+	background-position: center;
+	background-attachment: fixed;
+	overflow: hidden;
+}
+.link-group{
+	margin-top: 160px;
+}
 </style>

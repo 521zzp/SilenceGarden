@@ -20,12 +20,20 @@ const actions = {
 		const list = await fetch(GET_MELODY_CATALOG, getModel()).then(analy)
 		list && commit(types.GET_MELODY_CATALOG, list)
 	},
+	violinInint ({ commit }, obj) {
+		const melody = {
+			name: '',
+			src: '',
+			disk_img: '',
+			bg_img: ''
+		}
+		const last = ''
+		const next  = ''
+		commit(types.GET_MELODY, { melody, last, next })
+	},
 	getViolinInfo ({ commit }, obj){
-		commit(types.GET_MELODY, {})
 		fetch(restful(GET_MELODY, obj), getModel()).then(analy)
 				.then((datas)=>{
-					console.log('datas')
-					console.log(datas)
 					datas && commit(types.GET_MELODY, datas)
 			}).catch(function(error) {
 			  });
@@ -38,7 +46,7 @@ const actions = {
 
 const mutations = {
 	[types.GET_MELODY] (state, { melody, last, next }) {
-		state.melody = melody ? melody : {}
+		state.melody = melody
 		state.last = last
 		state.next = next
     },

@@ -1,8 +1,14 @@
 <template>
-	<div class="violin-wrap" :style="{ backgroundImage: `url(${diskBGImg})` }"
+	<!-- :style="{ backgroundImage: `url(${diskBGImg})` }" -->
+	<div class="violin-wrap" 
 		@keyup.space.prevent="keyBoardChontroller" tabindex="-1" ref="page">
+		<div class="violin-bg-content">
+			<img class="vioin-bg-img" :src="diskBGImg" :class="{ 'vioin-bg-img-blur': !paused }"/>
+		</div>
 		<div class="container">
-			<div class="title">{{ title }}</div>
+			<div class="title">{{ title }}
+			<span style="color: #FFF5E6;">{{ paused }}</span>
+			</div>
 			
 			<!-- 音频控件 -->
 			<audio ref="music" :src="aud" @play="startPlay" @pause="pauseListener" @ended="playEnded" :autoplay="true"></audio>
@@ -10,11 +16,11 @@
 			<div class="violin-content">
 				<div class="disc">
 					<div class="disc-bg"></div>	
-					<img :src="discImg" class="melody-disk" :class="{ 'melody-pause': paused }"/>	
-					<div :style="lightScale" class="disk-light" 
+					<img :src="discImg" class="melody-disk" :class="{ 'melody-pause': paused }" @click.prevent="preventImageShow"/>	
+					<div v-if="isPc" :style="lightScale" class="disk-light" 
 						:class="{ 'disk-light-show': !paused }">
 					</div>
-					<div class="disk-controller" :class="{ 'disk-controller-transition': !pointer.flag }"
+					<div v-if="isPc" class="disk-controller" :class="{ 'disk-controller-transition': !pointer.flag }"
 						:style="{ transform: 'rotate(' + controllerRotate +  'deg)'  }">
 					</div>
 					
@@ -35,7 +41,7 @@
 			        </Tooltip>
 				</div>
 				<Tooltip content="上一曲" class="last melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(last, 'last')">
+					<div @click="changeMusic(last, 'last')" class="melody-exchange-box">
 						<Icon type="ios-skipbackward" ></Icon>
 					</div>
 				</Tooltip>
@@ -46,7 +52,7 @@
 					</div>
 				</Tooltip>
 				<Tooltip content="下一曲" class="next melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(next, 'next')">
+					<div @click="changeMusic(next, 'next')" class="melody-exchange-box">
 						<Icon type="ios-skipforward"></Icon>
 					</div>
 				</Tooltip>
@@ -62,6 +68,7 @@
 </template>
 
 <script>
+	import { isPc } from '@/utils/tool'
 	import { message } from '@/utils/talk'
 	import { Slider, Tooltip } from 'iview';
 	import { IMG } from '@/config/url'
@@ -78,20 +85,26 @@
 				pointer: {
 					init_value: -30,
 					flag: false, 		//是否跟随播放时间实时更改
-				}
+				},
+				current_src: '', 		//当前播放地址
 			}
 		},
 		computed: {
 			melody () {
 				return this.$store.state.violin.melody
 			},
+			isPc () {
+				return isPc()
+			},
 			aud () {
-				const src = this.$store.state.violin.melody.src
+				const store_src = this.$store.state.violin.melody.src;
+				const src = store_src ? store_src : this.current_src;
+				if (store_src) this.current_src = store_src;
 				return `/assets/audio/${src}`
 			},
 			discImg () {
 				let disk_img = this.$store.state.violin.melody.disk_img
-				disk_img = disk_img ? disk_img : '四月是你的谎言.png'
+				disk_img = disk_img ? disk_img : '四月是你的谎言-disk.png'
 				return `${IMG}/violin/${disk_img}`
 			},
 			diskBGImg () {
@@ -129,10 +142,8 @@
 					return -30
 				} else {
 					if (this.pointer.flag) {
-						console.log('时刻变化的指针')
 						return (this.current / this.during) * 11.2 - 4.6
 					} else {
-						console.log('指针初始化')
 						return  (this.pointer.init_value / this.during) * 11.2 - 4.6
 					}
 				}
@@ -144,6 +155,7 @@
 			}
 		},
 		created () {
+			this.$store.dispatch('violinInint', {})
 			this.$store.dispatch('getViolinInfo', { id: this.$route.params.id })
 		},
 		mounted () {
@@ -318,6 +330,10 @@
 					this.$router.push(`/violin/${music}`)
 				}
 			},
+			//移动端防止点图片预览
+			preventImageShow () {
+				return false
+			},
 		},
 		components: {
 			Slider,
@@ -355,8 +371,9 @@
 	margin-right: auto;
 	position: relative;
 	border-radius: 4px;
-	opacity: 1;
+	opacity: .6;
 	transition: all .3s;
+	margin-top: 30px;
 }
 .controller:hover{
 	opacity: 1;
@@ -427,6 +444,9 @@
 	bottom: 0;
 	transition: all .3s;
 }
+.melody-exchange-box{
+	width: 30px;
+}
 .violin-wrap {
 	min-height: 100vh;
 	overflow: auto;
@@ -434,6 +454,30 @@
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
+}
+.violin-bg-content{
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: -1;
+}
+.violin-bg-content:after{
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.vioin-bg-img{
+	filter: blur(0px);
+ 	margin:0 calc(50% - 960px);
+ 	transition: filter ease .8s;
+}
+.vioin-bg-img-blur{
+	filter: blur(16px); 
 }
 .violin-content{
 	max-width: 1200px;
@@ -456,6 +500,8 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 .disk-light{
 	position: absolute;
@@ -488,6 +534,7 @@
 }
 .melody-pause {
 	animation-play-state: paused;
+	-webkit-animation-play-state: paused;
 }
 .play{
 	font-size: 24px;
@@ -516,6 +563,45 @@
 	}
 	to{
 		transform: rotateZ(360deg);
+	}
+}
+@-webkit-keyframes wroll{
+	from{
+		-webkit-transform: rotateZ(0deg);
+	}
+	to{
+		-webkit-transform: rotateZ(360deg);
+	}
+}
+@media only screen and (max-width: @threshold) {
+	.disc{
+		width: 80vw;
+		height: 80vw;
+		overflow: hidden;
+	}
+	.melody-disk{
+		width: 100%;
+		height: 100%;
+	}
+	.disk-light, .disk-controller{
+		display: none;
+	}
+	.time-content{
+		width: 94%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.title{
+		height: 60px;
+		font-size: 28px;
+		display: block;
+		text-align: center;
+	}
+	.violin-content{
+		margin-top: 2vh;
+	}
+	.slider-wrap{
+		margin-right: 86px;
 	}
 }
 </style>

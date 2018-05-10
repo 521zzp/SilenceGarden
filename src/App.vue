@@ -21,5 +21,9 @@ export default {
 	display: block;
 	clear: both;
 }
-
+.overflow-ellipsis{
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space: nowrap; 
+}
 </style>
