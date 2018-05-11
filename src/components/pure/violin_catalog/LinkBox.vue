@@ -40,11 +40,11 @@
 	line-height: 1;
 	background-color: rgba(105, 105, 105, 0.8);
 	border-radius: 4px;
-	margin-top: 20px;
-	padding: 5px 20px;
+	padding: 5px 10px;
 }
 .box-image{
 	display: inline-block;
+	margin-left: 10px;
 	width: 90px;
 	height: 90px;
 	background-image: url('/assets/image/violin/catalog-disk-bg.png');
@@ -66,7 +66,7 @@
 	min-height: 90px;
 	vertical-align: top;
 	margin-left: 16px;
-	width: calc(100% - 110px);
+	width: calc(100% - 120px);
 }
 .title{
 	color: #FFFFFF;
@@ -99,6 +99,7 @@
 	border-radius: 4px;
 	padding: 1px 3px;
 	margin-right: .5em;	
+	margin-bottom: 4px;
 }
 
 .link-box-container:hover .box-image{

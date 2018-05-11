@@ -3,7 +3,7 @@
 		<div class="content">
 			<Row :gutter="6" type="flex" justify="space-around" class="link-group">
 				<Col :lg="6" :md="10" :sm="11" :xs="20" 
-					 class="animated fadeInUp" 
+					 class="animated fadeInUp link-item" 
 					 :style="{ animationDelay: index * 0.3 + 's' }"
 					 v-for="item,index in catalog" :key="index + 'box'">
 					<LinkBox :violin="item"/>
@@ -53,5 +53,16 @@
 }
 .link-group{
 	margin-top: 160px;
+}
+.link-item{
+	margin-bottom: 20px;
+}
+@media only screen and (max-width: @threshold) {
+	.link-group{
+		margin-top: 4vh;
+	}
+	.link-item{
+		margin-bottom: 10px;
+	}
 }
 </style>

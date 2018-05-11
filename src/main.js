@@ -4,17 +4,16 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-//import 'whatwg-fetch' //兼容IE fetch
+import iView from 'iview';
+import 'whatwg-fetch' //兼容IE fetch
 import '@/config/base.less'
 import '@/config/animate.css'
 import 'iview/dist/styles/iview.css'	
 
+console.log('iview:')
+console.log(iView)
 
-import { Row, Col, Icon } from 'iview';
-Vue.component('Row', Row);
-Vue.component('Col', Col);
-Vue.component('Icon', Icon);
-
+Vue.use(iView)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

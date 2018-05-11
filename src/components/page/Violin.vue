@@ -7,7 +7,6 @@
 		</div>
 		<div class="container">
 			<div class="title">{{ title }}
-			<span style="color: #FFF5E6;">{{ paused }}</span>
 			</div>
 			
 			<!-- 音频控件 -->
@@ -26,7 +25,7 @@
 					
 				</div>
 				<div class="time-content clearfix">
-					<div class="slider-wrap " @mousedown="stopClock" @mouseup="awakenClock">
+					<div class="slider-wrap " @mousedown="stopClock" @mouseup="awakenClock"  @touchstart="stopClock" @touchend="awakenClock">
 						<Slider :value="current" :max="max" :step="0.01" :tip-format="currentFormat" @on-change="currentSet"  class="violin-slider"></Slider>
 					</div>
 					<span class="time-show">{{playTimeFormat(current)}} / {{playTimeFormat(during)}}</span>
@@ -34,33 +33,43 @@
 			</div>
 			<!-- 播放控制组件 -->
 			<div class="controller">
-				<div class="single-circle melody-exchange" @click="playModelChange('single')">
-					 <div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'single' }"></div>
-					<Tooltip content="单曲循环" placement="top" :delay="800">
-			            <Icon type="ios-loop-strong"></Icon>
-			        </Tooltip>
+				<div class="melody-exchange">
+					<router-link to="/violin" style="color: #495060;">
+						<Icon type="android-menu"></Icon>
+					</router-link>
 				</div>
-				<Tooltip content="上一曲" class="last melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(last, 'last')" class="melody-exchange-box">
-						<Icon type="ios-skipbackward" ></Icon>
+				<div class="single-circle melody-exchange" @click="playModelChange('single')">
+					<div class="play-model-wrap">
+						<Icon type="ios-loop-strong"></Icon>
+						<div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'single' }"></div>
 					</div>
-				</Tooltip>
-				<Tooltip :content="paused ? '播放' : '暂停' " class="play-puase" placement="top" :delay="800">
-					<div @click="playPause" style="width: 60px; height: 60px;">
-						<Icon v-show="paused" type="ios-play" style="margin-left: 6px;"></Icon>
-						<Icon v-show="!paused" type="ios-pause"></Icon>
-					</div>
-				</Tooltip>
-				<Tooltip content="下一曲" class="next melody-exchange" placement="top" :delay="800">
-					<div @click="changeMusic(next, 'next')" class="melody-exchange-box">
-						<Icon type="ios-skipforward"></Icon>
-					</div>
-				</Tooltip>
-				<div class="random-play melody-exchange" @click="playModelChange('random')">
-					<div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'random' }"></div>
-					<Tooltip content="随机播放" placement="top" :delay="800">
-						<Icon type="ios-shuffle-strong"></Icon>
+				</div>
+				<div @click="changeMusic(last, 'last')" class="melody-exchange-box last melody-exchange">
+					<Icon type="ios-skipbackward" ></Icon>
+				</div>
+				<div @click="playPause" class="play-puase">
+					<Icon v-show="paused" type="ios-play" style="margin-left: 6px;"></Icon>
+					<Icon v-show="!paused" type="ios-pause"></Icon>
+				</div>
+				<div @click="changeMusic(next, 'next')" class="melody-exchange-box next melody-exchange">
+					<Icon type="ios-skipforward"></Icon>
+				</div>
+				<div class="melody-exchange">
+					<Tooltip placement="top">
+					    <Icon v-show="volume != 0" type="android-volume-up"></Icon>
+					    <Icon v-show="volume == 0" type="android-volume-off"></Icon>
+					    <div slot="content" >
+					    	<div style="width: 100px;">
+					    		<Slider :value="volume" :max="1.01" :step="0.01" :min="0" :tip-format="volumeFormat" @on-input="volumnSet"></Slider>
+					    	</div>
+					    </div>
 					</Tooltip>
+				</div>
+				<div class="random-play melody-exchange" @click="playModelChange('random')">
+					<div class="play-model-wrap">
+						<Icon type="ios-shuffle-strong"></Icon>
+						<div class="play-model-bg" :class="{ 'play-model-on-bg': model === 'random' }"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -78,6 +87,7 @@
 				paused: true, 			//是否暂停状态
 				during: '',				//文件时长
 				current: 0,				//当前时间
+				volume: 1,			//音量
 				clock: null,			//定时器,获取更新播放进度
 				min: 0, 				//最小值
 				max: 0,					//最大值
@@ -147,7 +157,7 @@
 						return  (this.pointer.init_value / this.during) * 11.2 - 4.6
 					}
 				}
-			}
+			},
 		},
 		watch: {
 			melody () {
@@ -160,8 +170,6 @@
 		},
 		mounted () {
 			//页面聚焦
-			this.$refs.page.focus()
-    			
 			console.log('mounted........................')
 			console.log(this.$refs.music)
 			const music = this.$refs.music
@@ -290,6 +298,8 @@
 				}
 			},
 			awakenClock (){
+				clearInterval(this.clock)
+				this.startClock()
 			},
 			// 更改播放位置
 			currentSet (value){
@@ -299,6 +309,16 @@
 			},
 			currentFormat (value) {
 				return this.playTimeFormat(value)				
+			},
+			//设置音量
+			volumnSet (value) {
+				this.volume = value
+				if (this.$refs.music) {
+					this.$refs.music.volume = value
+				}
+			},
+			volumeFormat (){
+				return Number.parseInt(this.volume * 100)
 			},
 			// 播放时间格式化
 			playTimeFormat (value) {
@@ -364,7 +384,8 @@
 	text-shadow: 0 0 1px #fff;
 }
 .controller{
-	width: 310px;
+	width: 80%;
+	max-width: 340px;
 	height: 70px;
 	background-color: rgba(255, 255, 255, 0.3);
 	margin-left: auto;
@@ -374,6 +395,9 @@
 	opacity: .6;
 	transition: all .3s;
 	margin-top: 30px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 .controller:hover{
 	opacity: 1;
@@ -384,14 +408,8 @@
 	border: 2px solid #000;
 }
 .play-puase{
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
 	font-size: 40px;
 	text-align: center;
-	margin: auto auto;
 	width: 60px;
 	height: 60px;
 	border: 1px solid #2C3E50;
@@ -408,16 +426,20 @@
 	left: 10px;
 	border-radius: 50%;
 }
+.play-model-wrap{
+	height: 100%;
+	position: relative;
+}
 .play-model-bg{
 	position: absolute;
+	top: 0;
 	width: 100%;
 	height: 100%;
 	background-color: #98FB98;
-	top: 0;
-	left: 0;
 	border-radius: 50%;
 	transform: scale(0);
 	transition: transform .3s;
+	z-index: -1;
 }
 .play-model-on-bg{
 	transform: scale(1);
@@ -432,16 +454,12 @@
 	color: #000;
 }
 .melody-exchange{
-	position: absolute;
+	/*position: absolute;*/
 	width: 30px;
 	height: 30px;
 	font-size: 30px;
-	margin-top: auto;
-	margin-bottom: auto;
-	top: 0;
 	text-align: center;
 	line-height: 30px;
-	bottom: 0;
 	transition: all .3s;
 }
 .melody-exchange-box{
@@ -450,7 +468,6 @@
 .violin-wrap {
 	min-height: 100vh;
 	overflow: auto;
-	background-image: url('@{image}/violin/四月是你的谎言-背景.jpg');
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
@@ -601,7 +618,7 @@
 		margin-top: 2vh;
 	}
 	.slider-wrap{
-		margin-right: 86px;
+		margin-right: 90px;
 	}
 }
 </style>
