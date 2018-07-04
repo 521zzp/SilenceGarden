@@ -5,7 +5,7 @@ import Poetry from '@/components/page/Poetry'
 import Poem from '@/components/page/Poem'
 import ViolinCatalog from '@/components/page/ViolinCatalog'
 import Violin from '@/components/page/Violin'
-
+import Editor from '@/components/page/Editor'
 
 Vue.use(Router)
 
@@ -37,5 +37,10 @@ export default new Router({
       name: 'Violin',
       component: Violin
     },
+		{
+			path: '/write',
+			name: 'Editor',
+			component: Editor
+		},
   ]
 })
