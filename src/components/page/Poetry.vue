@@ -13,7 +13,6 @@
 					<router-link to="/poem/采薇" class="item">采薇</router-link>
 				</Col>
 			</Row>-->
-			
 		</div>
 	</div>
 </template>
@@ -32,6 +31,18 @@ export default {
 	},
 	created () {
 		this.$store.dispatch('getPoetryCatalog')
+	},
+	methods: {
+		
+		
+		
+		aa (arr) {
+			for (var i = 0; i < arr.length; i++) {
+				for (var j =0; j< arr[i].length; i++) {
+					console.log(arr[i][j])
+				}
+			}
+		}
 	}
 }
 </script>
