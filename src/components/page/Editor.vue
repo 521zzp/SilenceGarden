@@ -25,7 +25,7 @@
         </div>
       </Form>
     </div>
-    <mavon-editor  class="editor" @save="save"></mavon-editor>
+    <mavon-editor v-model="markdown.value" class="editor" @save="save"></mavon-editor>
   </div>
 </template>
 
@@ -36,6 +36,10 @@
   export default {
     data() {
       return {
+        markdown: {
+          value: '',
+          html: ''
+        },
         tags: [],
         form: {
           user: '',
@@ -51,6 +55,7 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$Message.success('Success!');
+            console.log(this.markdown.value)
           } else {
             this.$Message.error('Fail!');
           }
@@ -68,6 +73,9 @@
       save (value, render) {
         console.log('value', value)
         console.log('render', render)
+      },
+      publish () {
+          console.log(this.markdown)
       }
     }
   }
