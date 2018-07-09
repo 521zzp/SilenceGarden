@@ -5,6 +5,7 @@ import {actions} from './actions'
 import {mutations} from './mutations'
 import poetry from './modules/poetry'
 import violin from './modules/violin'
+import article from './modules/article'
 
 Vue.use(Vuex)
 
@@ -41,6 +42,7 @@ const store = new Vuex.Store({
 	modules: {
 		poetry,
 		violin,
+    article,
 	}
 })
 

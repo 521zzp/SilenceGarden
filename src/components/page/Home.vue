@@ -3,12 +3,12 @@
 		<audio src="/assets/audio/汐.mp3"  ref="bgm" autoplay="autoplay" loop="loop"></audio>
 		<Row type="flex" justify="space-around" class="animated fadeInDown">
 			<Col class="col" :xs="20" :sm="12">
-				<router-link to="/poetry" class="item skill">
+				<router-link to="/article" class="item skill">
 					<span>纵使困顿难行，亦当砥砺奋进</span>
 				</router-link>
 			</Col>
 		</Row>
-		
+
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.4s' }">
 			<Col class="col" :xs="20" :sm="12">
 				<router-link to="/poetry" class="item poetry">
@@ -16,7 +16,7 @@
 				</router-link>
 			</Col>
 		</Row>
-		
+
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '.8s' }">
 			<Col class="col" :xs="20" :sm="12">
 				<router-link to="/violin" class="item violin">
@@ -24,7 +24,7 @@
 				</router-link>
 			</Col>
 		</Row>
-		
+
 		<Row type="flex" justify="space-around" class="animated fadeInDown" :style="{ animationDelay: '1.2s' }">
 			<Col class="col" :xs="20" :sm="12">
 				<router-link to="/poetry" class="item kawayi">
@@ -32,7 +32,7 @@
 				</router-link>
 			</Col>
 		</Row>
-		
+
 	</div>
 </template>
 
@@ -40,7 +40,7 @@
 export default {
 	data() {
 		return {
-			
+
 		}
 	},
 	mounted() {
@@ -101,7 +101,7 @@ export default {
 	background-position: right;
 	opacity: 0.9;
 	box-shadow: none;
-	transition: all .3s; 
+	transition: all .3s;
 }
 .item:hover{
 	cursor: pointer;
@@ -113,7 +113,7 @@ export default {
 	transition: all .5s;
 	letter-spacing: .2em;
 	font-style: inherit;
-	
+
 }
 .item:hover span{
 	background: linear-gradient(to right, red, blue);

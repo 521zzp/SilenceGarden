@@ -1,11 +1,11 @@
 <template>
   <div class="write-container">
     <div class="settings">
-      <Form ref="form" :model="form" inline>
+      <Form ref="form" :model="form" inline :rules="ruels">
         <div style="max-width: 1200px;margin: 0 auto;">
           <div class="two-content">
-            <FormItem prop="user">
-              <Input type="text" v-model="form.user" placeholder="Title" style="width: 200px">
+            <FormItem prop="title">
+              <Input type="text" v-model="form.title" placeholder="Title" style="width: 200px">
               <Icon type="ios-person-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
@@ -32,7 +32,7 @@
 <script>
   import { mavonEditor } from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
-
+  import MarkdownIt from 'markdown-it'
   export default {
     data() {
       return {
@@ -42,9 +42,14 @@
         },
         tags: [],
         form: {
-          user: '',
+          title: '',
           tag: ''
         },
+        ruels: {
+          title: [
+            { required: true, message: '标题不能为空', trigger: 'blur' }
+          ]
+        }
       }
     },
     components: {
@@ -56,6 +61,17 @@
           if (valid) {
             this.$Message.success('Success!');
             console.log(this.markdown.value)
+            const md = new MarkdownIt();
+            console.log('~~~~~~~~~~~~~~~~~~~')
+            console.log(md.render(this.markdown.value))
+            console.log('real html')
+            console.log(this.markdown.html)
+            this.$store.dispatch('articleSave', {
+              title: this.form.title,
+              tags: this.tags,
+              content: this.markdown.value
+            })
+
           } else {
             this.$Message.error('Fail!');
           }
