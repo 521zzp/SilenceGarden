@@ -25,14 +25,13 @@
         </div>
       </Form>
     </div>
-    <mavon-editor v-model="markdown.value" class="editor" @save="save"></mavon-editor>
+    <mavon-editor v-model="markdown.value" class="editor" @save="save" @change="save"></mavon-editor>
   </div>
 </template>
 
 <script>
   import { mavonEditor } from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
-  import MarkdownIt from 'markdown-it'
   export default {
     data() {
       return {
@@ -59,17 +58,11 @@
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
-            console.log(this.markdown.value)
-            const md = new MarkdownIt();
-            console.log('~~~~~~~~~~~~~~~~~~~')
-            console.log(md.render(this.markdown.value))
-            console.log('real html')
-            console.log(this.markdown.html)
             this.$store.dispatch('articleSave', {
               title: this.form.title,
               tags: this.tags,
-              content: this.markdown.value
+              markdown: this.markdown.value,
+              html: this.markdown.html
             })
 
           } else {
@@ -83,12 +76,10 @@
         console.log(this.tags)
       },
       deleteTip (tag) {
-        console.log('delete tag', tag)
         this.tags.splice(this.tags.indexOf(tag), 1)
       },
       save (value, render) {
-        console.log('value', value)
-        console.log('render', render)
+        this.markdown.html = render
       },
       publish () {
           console.log(this.markdown)
