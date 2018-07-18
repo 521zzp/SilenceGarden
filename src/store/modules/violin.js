@@ -17,8 +17,10 @@ const state = {
 
 const actions = {
 	async getVillinCatalog ({ commit }, obj) {
+    commit(types.GLOBAL_LOADING, { loading: true })
 		const list = await fetch(GET_MELODY_CATALOG, getModel()).then(analy)
 		list && commit(types.GET_MELODY_CATALOG, list)
+    commit(types.GLOBAL_LOADING, { loading: false })
 	},
 	violinInint ({ commit }, obj) {
 		const melody = {

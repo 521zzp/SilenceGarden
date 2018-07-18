@@ -25,7 +25,7 @@
         </div>
       </Form>
     </div>
-    <mavon-editor v-model="markdown.value" class="editor" @save="save" @change="save"></mavon-editor>
+    <mavon-editor ref=md v-model="markdown.value" class="editor" @imgAdd="$imgAdd" @save="save" @change="save"></mavon-editor>
   </div>
 </template>
 
@@ -54,6 +54,30 @@
     components: {
       mavonEditor
     },
+    created () {
+      const id = this.$route.params.id
+      id && this.$store.dispatch('getReviseArticleDetails', { id })
+    },
+    computed: {
+      upload_image () {
+        return this.$store.state.article.upload_image
+      },
+      revise_article () {
+        return this.$store.state.article.revise_article
+      }
+    },
+    watch: {
+      upload_image (val) {
+        const pos = this.$store.state.article.pos
+        this.$refs.md.$img2Url(pos, '/assets/image/article/upload/' + val);
+      },
+      revise_article (val) {
+        console.log('render___________________', val)
+        this.markdown.value = val.markdown
+        this.form.title = val.title
+        this.tags = val.tags
+      }
+    },
     methods: {
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
@@ -73,7 +97,6 @@
       addTag () {
         this.form.tag && this.tags.push(this.form.tag)
         this.form.tag = undefined
-        console.log(this.tags)
       },
       deleteTip (tag) {
         this.tags.splice(this.tags.indexOf(tag), 1)
@@ -82,7 +105,11 @@
         this.markdown.html = render
       },
       publish () {
-          console.log(this.markdown)
+      },
+      $imgAdd (pos, $file) {
+        const formdata = new FormData();
+        formdata.append('image', $file);
+        this.$store.dispatch('articleImageUpload', { formdata, pos })
       }
     }
   }

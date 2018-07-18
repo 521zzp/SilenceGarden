@@ -23,9 +23,9 @@
 	export default {
 		data () {
 			return {
-				
+
 			}
-		}, 
+		},
 		computed: {
 			poem () {
 				return this.$store.state.poetry.poem
@@ -36,19 +36,18 @@
 			content () {
 				return this.poem.content
 			},
+      loading () {
+        return this.$store.state.poetry.poem_loading
+      },
 			bgimage () {
-				console.log(this.poem.img)
 				if (this.poem.img && this.poem.img.length > 0) {
 					const path = IMG + '/poem-bg/'
-					console.log(isPc())
-					console.log(this.poem.img[0])
-					console.log(path + this.poem.img[0])
 					return {
 						backgroundImage: isPc() ? `url(${path + this.poem.img[0]})` : `url(${path + this.poem.img[1]})`
 					}
 				} else{
 					return {
-						
+
 					}
 				}
 			}
@@ -56,7 +55,7 @@
 		created () {
 			const title = this.$route.params.title
 			this.$store.dispatch('getPoemByTitle', { title })
-		}
+		},
 	}
 </script>
 

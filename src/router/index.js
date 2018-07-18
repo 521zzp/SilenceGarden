@@ -49,9 +49,14 @@ export default new Router({
       component: Article
     },
 		{
-			path: '/write',
+			path: '/521zzpsnmjygxd-write',
 			name: 'Editor',
 			component: Editor
 		},
+    {
+      path: '/521zzpsnmjygxd-revise/:id',
+      name: 'Editor',
+      component: Editor
+    },
   ]
 })

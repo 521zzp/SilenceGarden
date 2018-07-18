@@ -12,6 +12,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
+	  loading: false,
 		notice: {
 			state: 1,
 			type: 0,

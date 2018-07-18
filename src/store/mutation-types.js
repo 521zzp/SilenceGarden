@@ -1,8 +1,12 @@
+import {BASEURL} from "../config/url";
 
+export const GLOBAL_LOADING = 'GLOBAL_LOADING' //全局loading
 
 export const GET_ARTICLE_DETAILS = 'GET_ARTICLE_DETAILS' //获取文章详情
+export const GET_REVISE_ARTICLE_DETAILS = 'GET_REVISE_ARTICLE_DETAILS' //获取需要修订的文章详情
 export const GET_ARTICLE_CATALOG = 'GET_ARTICLE_CATALOG' //获取文章目录
 export const ARTICLE_SAVE = 'ARTICLE_SAVE' //文章保存
+export const ARTICLE_IMAGE_UPLOAD = BASEURL + '/article/image/upload' //写文章图片上传
 
 export const GET_POETRY_CATALOG = 'GET_POETRY_CATALOG' //获取诗词目录
 export const GET_POEM = 'GET_POEM' //获取诗词

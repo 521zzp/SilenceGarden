@@ -1,17 +1,22 @@
 <template>
 
-
+  <Loading :loading="loading"/>
 
 </template>
 
 <script>
 	import { Message, Notice, Modal, LoadingBar } from 'iview';
+  import  Loading from '@/components/pure/common/Loading'
 	export default {
 		data () {
 			return {
 			}
 		},
 		computed: {
+      loading () {
+        console.log('=======global=====')
+        return this.$store.state.loading
+      },
 			token () {
 				return this.$store.state.token
 			},
@@ -122,7 +127,10 @@
 					 LoadingBar.finish();
 				}
 			}
-		}
+		},
+    components: {
+      Loading,
+    }
 	}
 </script>
 
