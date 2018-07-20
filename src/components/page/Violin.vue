@@ -1,6 +1,6 @@
 <template>
 	<!-- :style="{ backgroundImage: `url(${diskBGImg})` }" -->
-	<div class="violin-wrap" 
+	<div class="violin-wrap"
 		@keyup.space.prevent="keyBoardChontroller" tabindex="-1" ref="page">
 		<div class="violin-bg-content">
 			<img class="vioin-bg-img" :src="diskBGImg" :class="{ 'vioin-bg-img-blur': !paused }"/>
@@ -8,21 +8,21 @@
 		<div class="container">
 			<div class="title">{{ title }}
 			</div>
-			
+
 			<!-- 音频控件 -->
 			<audio ref="music" :src="aud" @play="startPlay" @pause="pauseListener" @ended="playEnded" :autoplay="true"></audio>
-			
+
 			<div class="violin-content">
 				<div class="disc">
-					<div class="disc-bg"></div>	
-					<img :src="discImg" class="melody-disk" :class="{ 'melody-pause': paused }" @click.prevent="preventImageShow"/>	
-					<div v-if="isPc" :style="lightScale" class="disk-light" 
+					<div class="disc-bg"></div>
+					<img :src="discImg" class="melody-disk" :class="{ 'melody-pause': paused }" @click.prevent="preventImageShow"/>
+					<div v-if="isPc" :style="lightScale" class="disk-light"
 						:class="{ 'disk-light-show': !paused }">
 					</div>
 					<div v-if="isPc" class="disk-controller" :class="{ 'disk-controller-transition': !pointer.flag }"
 						:style="{ transform: 'rotate(' + controllerRotate +  'deg)'  }">
 					</div>
-					
+
 				</div>
 				<div class="time-content clearfix">
 					<div class="slider-wrap " @mousedown="stopClock" @mouseup="awakenClock"  @touchstart="stopClock" @touchend="awakenClock">
@@ -140,7 +140,7 @@
 					scale = 1.17 - (this.current / this.during) * 0.4
 					rorate = (this.current / this.during) * 12 - 6
 				} catch (e) {
-					
+
 				}
 					return {
 						transform: `scale(${scale}) rotate(${rorate}deg)`
@@ -161,7 +161,7 @@
 		},
 		watch: {
 			melody () {
-				
+
 			}
 		},
 		created () {
@@ -174,8 +174,8 @@
 			console.log(this.$refs.music)
 			const music = this.$refs.music
 			const vm = this
-			
-			//成功获取资源长度  
+
+			//成功获取资源长度
 			music.addEventListener('loadedmetadata', (value) => {
 				this.init()
 				this.pausedChange()
@@ -206,7 +206,7 @@
 					if (this.clock) {
 						clearInterval(this.clock)
 						this.paused = true
-					} 
+					}
 					console.log('随机播放！')
 					this.$store.dispatch('getRamdonViolinInfo', { id: this.$route.params.id })
 					//this.$router.push('/violin/' + 3)
@@ -215,10 +215,10 @@
 					if (this.clock) {
 						clearInterval(this.clock)
 						this.paused = true
-					} 
+					}
 				}
 			},
-			//play()和autoplay开始播放时触发  
+			//play()和autoplay开始播放时触发
 			startPlay () {
 				console.log('playing musci_______________')
 				console.log('play()和autoplay开始播放时触发  ')
@@ -233,7 +233,7 @@
 					vm.pointer.flag = true
 				}, 800)
 			},
-			//pause()触发 
+			//pause()触发
 			pauseListener (){
 				this.pointer.flag = false
 			},
@@ -308,7 +308,7 @@
 				this.startClock()
 			},
 			currentFormat (value) {
-				return this.playTimeFormat(value)				
+				return this.playTimeFormat(value)
 			},
 			//设置音量
 			volumnSet (value) {
@@ -359,7 +359,7 @@
 			Slider,
 			Tooltip
 		}
-		
+
 	}
 </script>
 
@@ -380,7 +380,7 @@
 	font-size: 60px;
 	height: 90px;
 	font-family: @poem;
-	color: #fff; 
+	color: #fff;
 	text-shadow: 0 0 1px #fff;
 }
 .controller{
@@ -489,12 +489,18 @@
 	height: 100%;
 }
 .vioin-bg-img{
-	filter: blur(0px);
+	filter: blur(0);
  	margin:0 calc(50% - 960px);
  	transition: filter ease .8s;
 }
+
+
+
+
+
+
 .vioin-bg-img-blur{
-	filter: blur(16px); 
+	filter: blur(16px);
 }
 .violin-content{
 	max-width: 1200px;

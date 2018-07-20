@@ -2,8 +2,8 @@
 	<div class="violin-catalog-cintainer">
 		<div class="content">
 			<Row :gutter="6" type="flex" justify="space-around" class="link-group">
-				<Col :lg="6" :md="10" :sm="11" :xs="20" 
-					 class="animated fadeInUp link-item" 
+				<Col :lg="6" :md="10" :sm="11" :xs="20"
+					 class="animated fadeInUp link-item"
 					 :style="{ animationDelay: index * 0.3 + 's' }"
 					 v-for="item,index in catalog" :key="index + 'box'">
 					<LinkBox :violin="item"/>
@@ -21,7 +21,7 @@
 
 <script>
 	import LinkBox from '@/components/pure/violin_catalog/LinkBox'
-	
+
 	export default {
 		created () {
 			this.$store.dispatch('getVillinCatalog')

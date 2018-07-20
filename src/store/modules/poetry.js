@@ -5,7 +5,6 @@ import { getModel, restful, analy } from '@/utils/net'
 
 const state = {
 	catalog: [],
-  poem_loading: true,
 	poem: {
 		title: '',
 		content: [],
@@ -25,23 +24,21 @@ const actions = {
 		}
 	},
 	getPoemByTitle ({ commit }, obj){
-		commit(types.GET_POEM, { poem: {}, loading: true })
+		commit(types.GET_POEM, { poem: {}})
     commit(types.GLOBAL_LOADING, { loading: true })
 		fetch(restful(GET_POEM, obj), getModel()).then(analy)
 				.then((datas)=>{
-					datas ? commit(types.GET_POEM, { poem: datas, loading: false }) : ''
+					datas ? commit(types.GET_POEM, { poem: datas }) : ''
           commit(types.GLOBAL_LOADING, { loading: false })
 			}).catch(function(error) {
-      commit(types.GLOBAL_LOADING, { loading: false })
-      commit(types.GET_POEM, { poem: {}, loading: false })
+        commit(types.GLOBAL_LOADING, { loading: false })
 			  });
   	}
 }
 
 const mutations = {
-	[types.GET_POEM] (state, { poem, loading }) {
+	[types.GET_POEM] (state, { poem }) {
 		state.poem = poem
-    state.poem_loading = loading
    },
    [types.GET_POETRY_CATALOG] (state, obj) {
    	state.catalog = obj

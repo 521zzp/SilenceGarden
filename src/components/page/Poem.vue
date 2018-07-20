@@ -13,7 +13,14 @@
 					<span v-for="item,index in content" :key="index" class="sentence" :class="poem.type === 'poem' ? 'poem' : 'essay' ">{{item}}</span>
 				</section>
 			</div>
+      <div class="back">
+        <router-link to="/poetry" class="back-link"><Icon type="reply"></Icon></router-link>
+      </div>
+      <div class="back-two">
+        <router-link to="/poetry" class="back-link-two"><Icon type="reply"></Icon></router-link>
+      </div>
 		</div>
+
 	</div>
 </template>
 
@@ -36,9 +43,6 @@
 			content () {
 				return this.poem.content
 			},
-      loading () {
-        return this.$store.state.poetry.poem_loading
-      },
 			bgimage () {
 				if (this.poem.img && this.poem.img.length > 0) {
 					const path = IMG + '/poem-bg/'
@@ -61,7 +65,38 @@
 
 <style scoped="scoped" lang="less">
 @import '../../config/base.less';
-
+.back-two{
+  position: fixed;
+  top: 5%;
+  right: 5%;
+}
+.back-link-two{
+  font-size: 60px;
+  color: #5b6270;
+}
+.back-link-two:hover{
+  color: #2b85e4;
+}
+.back{
+  text-align: center;
+  font-size: 36px;
+  line-height: 36px;
+  cursor: pointer;
+}
+.back-link{
+  display: inline-block;
+  height: 100%;
+  background-color: gainsboro;
+  border-radius: 4px;
+  width: 0;
+  overflow: hidden;
+  transition: width .5s ease .1s, opacity .5s ease .1s;
+  opacity: 0;
+}
+.back:hover .back-link{
+  width: 100%;
+  opacity: 0.8;
+}
 .container{
 	color: #000000;
 	height: 100vh;
@@ -83,6 +118,8 @@
 	margin-top: 50px;
 	padding: 0 1em;
 	border-radius: @bbr;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 .sentence{
 	display: block;
@@ -95,16 +132,16 @@
 }
 .content{
 	font-size: 36px;
+  text-shadow: 0 0 1em gainsboro;
 }
 .section{
-	margin-bottom: 1.2em;
+	margin-bottom: 0.5em;
 }
 @media only screen and (max-width: @threshold) {
 	.wrap{
 		width: 94%;
 		margin-top: 8vh;
 		padding: 0 0;
-		background-color: rgba(255, 255, 255, 0.3);
 	}
 	.title{
 		font-size: 42px;
@@ -115,6 +152,14 @@
 	.container{
 		background-image: url(/assets/image/poem-bg/poem-default-m.jpg);
 	}
+  .back-two{
+    position: absolute;
+    top: -8vh;
+    right: 5%;
+  }
+  .back-link-two{
+    font-size: 36px;
+  }
 }
 </style>
 

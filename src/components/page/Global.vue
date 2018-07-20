@@ -14,7 +14,6 @@
 		},
 		computed: {
       loading () {
-        console.log('=======global=====')
         return this.$store.state.loading
       },
 			token () {

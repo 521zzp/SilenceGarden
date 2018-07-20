@@ -2,13 +2,13 @@
 	<div class="container">
 		<div class="content">
 			<Row type="flex" justify="center">
-				<Col v-for="item,index in catalog" class="item-block" :key="index" :sm="8" :lg="6" :xs="14">
+				<Col v-for="item,index in catalog" class="item-block" :key="index" :sm="8" :lg="6" :xs="12">
 					<router-link :to="'/poem/'+item.title" class="item animated ">{{ item.title }}</router-link>
 				</Col>
 
-        <Col :sm="8" :lg="6" :xs="14"></Col>
-        <Col :sm="8" :lg="6" :xs="14"></Col>
-        <Col :sm="8" :lg="6" :xs="14"></Col>
+        <Col :sm="8" :lg="6" :xs="12"></Col>
+        <Col :sm="8" :lg="6" :xs="12"></Col>
+        <Col :sm="8" :lg="6" :xs="12"></Col>
 			</Row>
 			<!--<Row  type="flex" justify="center">
 				<Col :sm="8" :lg="6" :xs="14">
@@ -87,7 +87,18 @@ export default {
   .content{
     max-width: 1400px;
     margin: 100px auto;
-
   }
-
+@media only screen and (max-width: @threshold) {
+  .content{
+    margin: 5% auto;
+  }
+  .item{
+    font-size: 20px;
+    padding: 0 5px;
+    margin-left: 2em;
+  }
+  .item-block{
+    margin-bottom: 0px;
+  }
+}
 </style>

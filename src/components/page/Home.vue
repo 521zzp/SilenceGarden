@@ -117,10 +117,10 @@ export default {
 }
 .item:hover span{
 	background: linear-gradient(to right, red, blue);
-    -webkit-background-clip: text;
-    color: transparent;
-    letter-spacing: .5em;
-    font-style: italic;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: .5em;
+  font-style: italic;
 }
 
 @media only screen and (max-width: @threshold) {
@@ -128,19 +128,25 @@ export default {
 		background-image: url(/assets/image/common/m-home-bg.jpg);
 	}
 	.item{
-		font-size: 16px;
+		font-size: 18px;
+    min-height: 50px;
+    line-height: 50px;
 		padding-left: .5em;
 	}
 	.item span{
-		letter-spacing: 0;
+		letter-spacing: 0em;
 		text-shadow: 0 0 5px #000;
 	}
 	.item:hover span{
-    	letter-spacing: .2em;
-    	text-shadow: none;
+    letter-spacing: 0.2em;
+    color: #2db7f5;
+    text-shadow: none;
 	}
 	.container{
 		padding-top: 5vh;
 	}
+  .col{
+    margin: 10px auto;
+  }
 }
 </style>

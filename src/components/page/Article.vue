@@ -20,7 +20,9 @@
 </template>
 
 <script>
-  import  Loading from '@/components/pure/common/Loading'
+  import Loading from '@/components/pure/common/Loading'
+  import { isPc } from "../../utils/tool";
+
   export default {
     name: "Article",
     data () {
@@ -48,7 +50,7 @@
     methods: {
       contentClick (e) {
         const nodeName = e.target.nodeName
-        if (nodeName === 'IMG') {
+        if (isPc() && nodeName === 'IMG') {
           this.modal_img = e.target.getAttribute('src')
           this.modal_img_open = true
         }

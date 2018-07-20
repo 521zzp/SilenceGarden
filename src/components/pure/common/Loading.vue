@@ -31,10 +31,12 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+  @import "../../../config/base.less";
   .loading.loading-on{
     pointer-events: auto;
     opacity: 1;
+    transition: opacity 0s;
   }
   .loading{
     width: 100%;
@@ -45,7 +47,7 @@
     pointer-events: none;
     z-index: 100;
     line-height: 100vh;
-    transition: opacity .5s;
+    transition: opacity .3s;
     opacity: 0;
     background-color: #ffffff;
   }
@@ -87,7 +89,7 @@
     50% {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
-      border-top-color: rgba(0, 0, 255, 0.5);
+      border-top-color: rgba(255, 69, 0, 0.5);
     }
     100% {
       -webkit-transform: rotate(360deg);
@@ -104,7 +106,7 @@
     50% {
       -webkit-transform: rotate(180deg);
       transform: rotate(180deg);
-      border-top-color: rgba(0, 0, 255, 0.5);
+      border-top-color: rgba(255, 69, 0, 0.5);
     }
     100% {
       -webkit-transform: rotate(360deg);
@@ -187,5 +189,12 @@
 
   .loader, .loader * {
     will-change: transform;
+  }
+
+  @media only screen and (max-width: @threshold) {
+    .loader4, .loader4 div{
+      border: 1px solid transparent;
+      padding: 4px;
+    }
   }
 </style>
