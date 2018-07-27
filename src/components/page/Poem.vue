@@ -151,6 +151,8 @@
 	}
 	.container{
 		background-image: url(/assets/image/poem-bg/poem-default-m.jpg);
+    background-size: cover;
+    background-position: top;
 	}
   .back-two{
     position: absolute;
