@@ -12,7 +12,12 @@
 
 <script>
     export default {
-        name: "ArticleCatalog",
+      name: "ArticleCatalog",
+      data () {
+        return {
+
+        }
+      },
       computed: {
           catalog () {
             return this.$store.state.article.catalog

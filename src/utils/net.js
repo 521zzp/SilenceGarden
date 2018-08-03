@@ -32,7 +32,10 @@ export const resultAny = (datas) => {
 			return Object.assign({}, {msg: datas.message}, datas.result )
 		}
 		
-	} else{
+	} else if (datas.code === 101) {
+    message(datas.message, 4)
+    router.push('/login');
+  } else{
 		if (datas.message) {
 			message(datas.message, 4)
 		}
@@ -75,7 +78,7 @@ export const analyJson = (dp) => {
  * @param  {object} params  the method wangt to post
  * 
  */
-export const postModelOne = ( params ) => {
+export const postModelOnline = ( params ) => {
 	return {
 		method: 'post',
 		credentials: 'include',
@@ -84,7 +87,7 @@ export const postModelOne = ( params ) => {
 		    'Content-Type': 'application/json'
 		},
 		body: JSON.stringify( 
-			Object.assign( {}, {token: store.state.token}, {datas: params})
+			Object.assign( {}, { token: store.state.token }, {datas: params})
 		)
 	}
 }

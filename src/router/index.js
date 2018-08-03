@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { CookieUtils } from '@/utils/cookie'
 // import Home from '@/components/page/Home'
 // import Poetry from '@/components/page/Poetry'
 // import Poem from '@/components/page/Poem'
@@ -51,11 +52,17 @@ const Editor = resolve => {
     resolve(require('@/components/page/Editor.vue'))
   })
 }
+// 登录
+const Login = resolve => {
+  require.ensure(['@/components/page/Login.vue'], () => {
+    resolve(require('@/components/page/Login.vue'))
+  })
+}
 
 
 Vue.use(Router)
 
-export default new Router({
+const router =  new Router({
   mode: 'history',
   routes: [
     {
@@ -94,14 +101,38 @@ export default new Router({
       component: Article
     },
 		{
-			path: '/521zzpsnmjygxd-write',
+			path: '/write',
 			name: 'Editor',
-			component: Editor
+			component: Editor,
+      meta: { auth: true }
 		},
     {
-      path: '/521zzpsnmjygxd-revise/:id',
-      name: 'Editor',
-      component: Editor
+      path: '/revise/:id',
+      name: 'Editor-revise',
+      component: Editor,
+      meta: { auth: true }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth) {
+    if (CookieUtils.get('uuid')) {
+      next()
+    } else{
+      next('/login')
+    }
+  } else{
+    next()
+  }
+
+})
+
+
+export default router

@@ -38,7 +38,7 @@
 }
 .box{
 	line-height: 1;
-	background-color: rgba(105, 105, 105, 0.8);
+	background-color: rgba(105, 105, 105, 0.6);
 	border-radius: 4px;
 	padding: 5px 10px;
 }
@@ -65,7 +65,7 @@
 	display: inline-block;
 	min-height: 90px;
 	vertical-align: top;
-	margin-left: 16px;
+	margin-left: 15px;
 	width: calc(100% - 120px);
 }
 .title{
@@ -100,8 +100,12 @@
 	padding: 1px 3px;
 	margin-right: .5em;	
 	margin-bottom: 4px;
+  transition: all .5s;
 }
-
+.violin-tag:hover{
+  background-color: #D5E8FC;
+  color: green;
+}
 .link-box-container:hover .box-image{
 	animation-play-state: running;
 }
@@ -128,5 +132,29 @@
 		transform: scale(0.9, 0.9);
 		opacity:1;
 	}
+}
+@media only screen and (max-width: @threshold) {
+  .box-image{
+    width: 70px;
+    height: 70px;
+  }
+  .box-info{
+    min-height: 70px;
+  }
+  .title{
+    margin-top: 6px;
+    font-size: 18px;
+  }
+  .album{
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .violin-tag{
+    font-size: 12px;
+  }
+  .tags{
+    margin-top: 4px;
+    margin-bottom: 1px;
+  }
 }
 </style>

@@ -1,5 +1,7 @@
 import {BASEURL} from "../config/url";
 
+export const LOGIN = 'LOGIN' //登录
+
 export const GLOBAL_LOADING = 'GLOBAL_LOADING' //全局loading
 
 export const GET_ARTICLE_DETAILS = 'GET_ARTICLE_DETAILS' //获取文章详情
@@ -10,6 +12,7 @@ export const ARTICLE_IMAGE_UPLOAD = BASEURL + '/article/image/upload' //写文�
 
 export const GET_POETRY_CATALOG = 'GET_POETRY_CATALOG' //获取诗词目录
 export const GET_POEM = 'GET_POEM' //获取诗词
+export const POETRY_SEARCH_KEYWORD_UPDATE = 'POETRY_SEARCH_KEYWORD_UPDATE' // 诗词搜索关键字更新
 
 
 export const GET_MELODY_CATALOG = 'GET_MELODY_CATALOG' //获取音频目录

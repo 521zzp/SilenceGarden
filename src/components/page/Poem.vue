@@ -14,10 +14,10 @@
 				</section>
 			</div>
       <div class="back">
-        <router-link to="/poetry" class="back-link"><Icon type="reply"></Icon></router-link>
+        <router-link to="/poetry" class="back-link"><Icon type="ios-undo" /></router-link>
       </div>
       <div class="back-two">
-        <router-link to="/poetry" class="back-link-two"><Icon type="reply"></Icon></router-link>
+        <router-link to="/poetry" class="back-link-two"><Icon type="ios-undo" /></router-link>
       </div>
 		</div>
 

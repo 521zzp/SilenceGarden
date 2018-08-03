@@ -34,40 +34,40 @@
 			<!-- 播放控制组件 -->
 			<div class="controller">
 				<div class="melody-exchange">
-					<router-link to="/violin" style="color: #495060;">
-						<Icon type="android-menu"></Icon>
+					<router-link to="/violin" style="color: #000;">
+            <Icon type="ios-apps" />
 					</router-link>
 				</div>
 				<div class="single-circle melody-exchange" @click="playModelChange('single')">
 					<div class="play-model-wrap">
-						<Icon type="ios-loop-strong"></Icon>
+            <Icon type="md-infinite" />
 						<div class="play-model-bg " :class="{ 'play-model-on-bg': model === 'single' }"></div>
 					</div>
 				</div>
 				<div @click="changeMusic(last, 'last')" class="melody-exchange-box last melody-exchange">
-					<Icon type="ios-skipbackward" ></Icon>
+          <Icon type="ios-arrow-back" />
 				</div>
 				<div @click="playPause" class="play-puase">
-					<Icon v-show="paused" type="ios-play" style="margin-left: 6px;"></Icon>
-					<Icon v-show="!paused" type="ios-pause"></Icon>
+					<Icon v-show="paused" type="md-play" style="margin-left: 6px;vertical-align: middle;"></Icon>
+					<Icon v-show="!paused" type="md-pause" style="vertical-align: middle;"></Icon>
 				</div>
 				<div @click="changeMusic(next, 'next')" class="melody-exchange-box next melody-exchange">
-					<Icon type="ios-skipforward"></Icon>
+          <Icon type="ios-arrow-forward" />
 				</div>
 				<div class="melody-exchange">
 					<Tooltip placement="top">
-					    <Icon v-show="volume != 0" type="android-volume-up"></Icon>
-					    <Icon v-show="volume == 0" type="android-volume-off"></Icon>
+					    <Icon v-show="volume != 0" type="md-volume-up"></Icon>
+					    <Icon v-show="volume == 0" type="md-volume-off"></Icon>
 					    <div slot="content" >
 					    	<div style="width: 100px;">
-					    		<Slider :value="volume" :max="1.01" :step="0.01" :min="0" :tip-format="volumeFormat" @on-input="volumnSet"></Slider>
+					    		<Slider :value="volume" :max="1" :step="0.01" :min="0" :tip-format="volumeFormat" @on-input="volumnSet"></Slider>
 					    	</div>
 					    </div>
 					</Tooltip>
 				</div>
 				<div class="random-play melody-exchange" @click="playModelChange('random')">
 					<div class="play-model-wrap">
-						<Icon type="ios-shuffle-strong"></Icon>
+						<Icon type="md-shuffle"></Icon>
 						<div class="play-model-bg" :class="{ 'play-model-on-bg': model === 'random' }"></div>
 					</div>
 				</div>
@@ -170,8 +170,8 @@
 		},
 		mounted () {
 			//页面聚焦
-			console.log('mounted........................')
-			console.log(this.$refs.music)
+			// console.log('mounted........................')
+			// console.log(this.$refs.music)
 			const music = this.$refs.music
 			const vm = this
 
@@ -188,10 +188,10 @@
 			next()
 		},
 		beforeDestroy () {
-			console.log('曲子播放组件即将销毁')
+			// console.log('曲子播放组件即将销毁')
 		},
 		destroyed () {
-			console.log('曲子播放组件已经销毁')
+			// console.log('曲子播放组件已经销毁')
 			if (this.clock) {
 				clearInterval(this.clock)
 			}
@@ -207,7 +207,7 @@
 						clearInterval(this.clock)
 						this.paused = true
 					}
-					console.log('随机播放！')
+					// console.log('随机播放！')
 					this.$store.dispatch('getRamdonViolinInfo', { id: this.$route.params.id })
 					//this.$router.push('/violin/' + 3)
 				} else {
@@ -220,10 +220,10 @@
 			},
 			//play()和autoplay开始播放时触发
 			startPlay () {
-				console.log('playing musci_______________')
-				console.log('play()和autoplay开始播放时触发  ')
-				console.log('当前播放位置：')
-				console.log(this.$refs.music.currentTime)
+				// console.log('playing musci_______________')
+				// console.log('play()和autoplay开始播放时触发  ')
+				// console.log('当前播放位置：')
+				// console.log(this.$refs.music.currentTime)
 				this.pointer.init_value = this.$refs.music.currentTime
 				this.pausedChange()
 				this.startClock()
@@ -243,48 +243,48 @@
 			},
 			//键盘按键控制
 			keyBoardChontroller () {
-				console.log('key down')
+				// console.log('key down')
 				this.playPause()
 			},
 			playPause () {
-				console.log(this.$refs.music)
-				console.log(this.$refs.music.paused)
+				// console.log(this.$refs.music)
+				// console.log(this.$refs.music.paused)
 				const music = this.$refs.music
 				music.paused ? music.play() : music.pause()
 				this.pausedChange()
 				this.startClock ()
-				if (!music.paused) {
-					const vm = this
-					setTimeout(function () {
-						console.log('claer delay')
-						console.log(vm.paused)
-					}, 800)
-				}
+				// if (!music.paused) {
+				// 	const vm = this
+				// 	setTimeout(function () {
+				// 		console.log('claer delay')
+				// 		console.log(vm.paused)
+				// 	}, 800)
+				// }
 			},
 			pausedChange () {
-				console.log('audio suorce')
-				console.log(this.$refs.music)
-				console.log()
-				console.log('change playing status')
-				console.log(this.$refs.music.paused)
-				console.log()
-				console.log('change playing during')
-				console.log(this.$refs.music.duration)
-				console.log(this.$refs.music.currentTime)
+				// console.log('audio suorce')
+				// console.log(this.$refs.music)
+				// console.log()
+				// console.log('change playing status')
+				// console.log(this.$refs.music.paused)
+				// console.log()
+				// console.log('change playing during')
+				// console.log(this.$refs.music.duration)
+				// console.log(this.$refs.music.currentTime)
 				this.paused = this.$refs.music.paused
 			},
 			// 播放组件初始化
 			init () {
-				console.log('初始化')
+				// console.log('初始化')
 				this.min = 0
 				this.max = this.$refs.music.duration
 				this.paused = this.$refs.music.paused
 				this.during = this.$refs.music.duration
-				console.log('当前暂停状态:' + this.paused)
+				// console.log('当前暂停状态:' + this.paused)
 			},
 			// 开始计时器
 			startClock () {
-				console.log(this.$refs.music.play.playing)
+				// console.log(this.$refs.music.play.playing)
 				this.stopClock()
 				const vm = this
 				this.clock = setInterval( () => {
@@ -303,7 +303,7 @@
 			},
 			// 更改播放位置
 			currentSet (value){
-				console.log('播放位置更改')
+				// console.log('播放位置更改')
 				this.$refs.music.currentTime = value
 				this.startClock()
 			},
@@ -339,8 +339,8 @@
 			},
 			// 换歌
 			changeMusic (music, type) {
-				console.log('音乐切换：' + music)
-				console.log('音乐切换类型：' + type)
+				// console.log('音乐切换：' + music)
+				// console.log('音乐切换类型：' + type)
 				if (!music && type === 'last') {
 					message('前面什么也没有┐(´∀｀)┌！', 4);
 				} else if (!music && type === 'next') {
@@ -392,7 +392,7 @@
 	margin-right: auto;
 	position: relative;
 	border-radius: 4px;
-	opacity: .6;
+	opacity: .4;
 	transition: all .3s;
 	margin-top: 30px;
 	display: flex;
@@ -405,14 +405,12 @@
 .play-puase:hover{
 	cursor: pointer;
 	color:  #000000;
-	border: 2px solid #000;
 }
 .play-puase{
 	font-size: 40px;
 	text-align: center;
 	width: 60px;
 	height: 60px;
-	border: 1px solid #2C3E50;
 	border-radius: 50%;
 	transition: all .3s;
 }
@@ -495,10 +493,6 @@
 }
 
 
-
-
-
-
 .vioin-bg-img-blur{
 	filter: blur(16px);
 }
@@ -579,6 +573,7 @@
 	/*background-color: rgba(255, 255, 255, 0.3);
 	padding: 0 5px;
 	border-radius: 4px;*/
+  font-size: 12px;
 }
 @keyframes roll{
 	from{
